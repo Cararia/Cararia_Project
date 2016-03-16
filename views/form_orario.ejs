@@ -1,0 +1,33 @@
+<HTML>
+<HEAD>
+<TITLE> Inserimento Data e Orario</TITLE>
+</HEAD>
+<BODY >
+	
+	Inserire giorno e orario di partenza:
+	<FORM action="/orario_selezionato"  method="get" >
+	
+		<input type="hidden" name="partenza" value=<%=partenza%> required />
+		<input type="hidden" name="cod_part" value=<%=cod_part%> required />
+		<input type="hidden" name="destinazione" value=<%=destinazione%> required />
+		<input type="hidden" name="cod_dest" value=<%=cod_dest%> required />
+		
+		Inserire il giorno nel formato gg/mm/aaaa:
+		 <input type="number" value="<%=g%>" max="31" name="giorno"    placeolder="gg" required />
+		/
+		 <input type="number" value="<%=m%>" max="12" name="mese"    placeolder="mm" required />
+		/
+		 <input type="number" min="<%=a%>" value="<%=a%>" name="anno"   placeolder="aaaa"  required />
+		<div/>
+		Inserire l'ora nel formato hh/mm:
+		<input type="number" value="<%=or%>" max="24" name="ora"  placeholder="hh" />
+		:
+		 <input type="number" value="<%=mi%>" max="60" name="minuto" placeholder  ="mm"   />
+		<div/>
+		
+		<input type="submit"  value="Seleziona" id="btnSend"  />
+		
+		</FORM>
+	
+</BODY>
+</HTML>

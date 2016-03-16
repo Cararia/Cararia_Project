@@ -1,0 +1,19 @@
+<HTML>
+<HEAD>
+<TITLE> Inserimento Destinazione</TITLE>
+</HEAD>
+<BODY >
+	
+	Inserire la stazione di arrivo:
+	<FORM action="/submit_destinazione"  method="get" >
+		
+		<input type="text" name="staz" size="50" maxlength="50" required />
+		<input type="hidden" name="tappa" value="destinazione" required />
+		<input type="hidden" name="partenza" value=<%=partenza%> required />
+		<input type="hidden" name="cod_part" value=<%=cod_part%> required />
+		<input type="submit" value="Seleziona" id="btnSend"  />
+		
+		</FORM>
+	
+</BODY>
+</HTML>
