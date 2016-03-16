@@ -77,8 +77,8 @@ var requestTokenUrl = "https://api.twitter.com/oauth/request_token";
 /*____________________________________________________________________________________________________
  *Chiavi assegnate da twitter all'app Cararia che offre il servizio
  * ____________________________________________________________________________________________________*/
-var CONSUMER_KEY = "pBmDZZnfK3LrUiM940UaG7SqD";
-var CONSUMER_SECRET = "VLIj2EF0BMOEaTSHFw04GTOPzueDwgdDznZqrjB5VraJNvBCIk";
+var CONSUMER_KEY = "***";
+var CONSUMER_SECRET = "***";
 
 /*____________________________________________________________________________________________________
  *Definisco l' oggetto oauth che andrà inviato come parametro per la richiesta del token per l' autenticazione con twitter
