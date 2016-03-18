@@ -1,6 +1,6 @@
 # Cararia_Project
 Descrizione:
-	Quest'applicazione permette di condivedere con gli altri informazioni su un viaggio 
+	Quest'applicazione permette di condividere con gli altri informazioni su un viaggio 
 	che si è in programma di fare attraverso un messaggio twitter.
 	
 Come funziona:
@@ -23,10 +23,10 @@ Servizi REST usati:
 	
 	Per quanto riguarda twitter è stata implementata l'autenticazione e autorizzazione oauth; per
 	eventuali informazioni riferirsi al seguente link: https://dev.twitter.com/oauth/3-legged .
-	Inoltre, per poter inviare il twit con le informazioni relative ad un viaggio è stata utilizzata
+	Inoltre, per poter inviare il tweet con le informazioni relative ad un viaggio è stata utilizzata
 	la chiamata POST statues/update.
 
-	Con le seconde API si prelevano informazioni relative ad una precisa stazione attraverso una POST.
+	Con le seconde API si prelevano informazioni relative ad una precisa stazione attraverso una GET.
 	Per ulteriori informazioni riferirsi al seguente link: ...
 
 Servizio di messaggeria asincrona:
