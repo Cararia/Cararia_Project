@@ -30,9 +30,10 @@ var NUMERO_VISITE_GIORNALIERE=0;
 
 
 // Inizio Receiver
-/*_________________________________________________________________________________________________________________________________________________
- *Ogni minuto leggo i messaggi presenti nella coda 'hello' di rabbit-mq contando quanti sono e aggiornando quindi la variabile globale che mantiene il numero totale di visite
- * _________________________________________________________________________________________________________________________________________________*/
+/*___________________________________________________________________________________________
+ *Ogni minuto leggo i messaggi presenti nella coda 'hello' di rabbit-mq contando quanti sono e aggiornando 
+ * quindi le variabili globali che mantengono il numero totale di visite e il numero di visite giornaliere
+ * ___________________________________________________________________________________________*/
 setInterval(function(){
 	amqp.connect('amqp://guest:guest@localhost:5672', function(err, conn) {		
 		conn.createChannel(function(err, ch) {			
@@ -77,8 +78,8 @@ var requestTokenUrl = "https://api.twitter.com/oauth/request_token";
 /*____________________________________________________________________________________________________
  *Chiavi assegnate da twitter all'app Cararia che offre il servizio
  * ____________________________________________________________________________________________________*/
-var CONSUMER_KEY = "***";
-var CONSUMER_SECRET = "***";
+var CONSUMER_KEY = "pBmDZZnfK3LrUiM940UaG7SqD";
+var CONSUMER_SECRET = "VLIj2EF0BMOEaTSHFw04GTOPzueDwgdDznZqrjB5VraJNvBCIk";
 
 /*____________________________________________________________________________________________________
  *Definisco l' oggetto oauth che andrà inviato come parametro per la richiesta del token per l' autenticazione con twitter
@@ -97,7 +98,7 @@ var form_p=fs.readFileSync('form_partenza.html',"utf8");
 
 /*___________________________________________________________________________________________
  * Definisco la funzione di call-back al click sul pulsante di submit delle form delle stazioni di partenza e arrivo,
- * che utilizzerà le API offerte dal servizio REST viaggiatreno per permettere all'utente di selezionare una
+ * che utilizzera le API offerte dal servizio REST viaggiatreno per permettere all'utente di selezionare una
  * particolare stazione a partire anche solo dalle prime lettere del suo nome
  * __________________________________________________________________________________________*/
 var submit_stazione_handler=function(req,res){
@@ -106,15 +107,19 @@ var submit_stazione_handler=function(req,res){
 	request.get(url,function(err,response,body){
 		console.log(err);
 		
-		//controllo se il risultato è vuoto, in caso positivo mando messaggio di errore!
-		if (body==undefined) {
+		//controllo se il riultato è vuoto, se è vuoto mando messaggio di errore!
+		if (body=="" ) {
 				var target;
 				if(req.query.tappa=="partenza")
 					res.send('<html><head><meta charset="utf-8"> <title>Cararia</title></head><body><h1>Errore!</h1>Il nome inserito non corrisponde a nessuna stazione, se si vuole riprovare <a href="'+INDIRIZZO+":"+PORTA+'/reinserisci_partenza">cliccare qui </a></body></html>')
 				else
 					res.send('<html><head><meta charset="utf-8"> <title>Cararia</title></head><body><h1>Errore!</h1>Il nome inserito non corrisponde a nessuna stazione, se si vuole riprovare <a href="'+INDIRIZZO+":"+PORTA+'/partenza_selezionata?stazione='+req.query.cod_part+"|"+req.query.partenza+'">cliccare qui </a></body></html>')
 		}
-				
+		
+		else if(body==undefined){
+			res.send('<html><head><meta charset="utf-8"> <title>Cararia</title></head><body><h1>Errore!</h1>Non si è ricevuta nessuna risposta dal server di Viaggiatreno si prega di riprovare piu tardi. Se vuole tornare alla pagina principale <a href="'+INDIRIZZO+":"+PORTA+'">cliccare qui </a></body></html>')
+		}
+		
 		else{
 			
 			var arr_linee=body.split('\n');
@@ -164,7 +169,7 @@ var home_handler=function(req,res){
 	// Inizio Sender
 	
 	/*____________________________________________________________________________________________________
-	 *Ad ogni accesso alla home page registro l'avvenuto accesso al sito inviando un messaggio alla coda 'hello' di rabbit-mq
+	 *Ad ogni accesso alla home page registro l' avvenuto accesso al sito inviando un messaggio alla coda 'hello' di rabbit-mq
 	 * ____________________________________________________________________________________________________*/
 	amqp.connect('amqp://guest:guest@localhost:5672', function(err, conn) {
 	  conn.createChannel(function(err, ch) {
@@ -189,7 +194,7 @@ var home_handler=function(req,res){
 	 * ____________________________________________________________________________________________________*/
 app.get("/visitatori",function(req,res){
 	var s='<html><head><meta charset="utf-8"> <title>Cararia</title></head><body><h1>Visitatori</h1>Il numero totale  di utenti che hanno utilizzato il sevizio è ' + NUMERO_VISITE
-	s+="<div>Il numero totale  di utenti che hanno utilizzato il sevizio nell' ultima ora è  " + NUMERO_VISITE_GIORNALIERE+'</body></html>'
+	s+="<div>Il numero totale  di utenti che hanno utilizzato il sevizio nell' ultima ora è  " + NUMERO_VISITE_GIORNALIERE+'<div> <a href="'+INDIRIZZO+":"+PORTA+'">Cliccare qui</a> per tornare alla pagina iniziale</body></html>'
 	res.send(s)
 	});
 
@@ -202,7 +207,7 @@ app.get("/",home_handler);
 app.get("/autenticati", function (req, res) {
 	
 /*____________________________________________________________________________________________________
- *Richiedo il token a twitter che servirà poi a richiedere l'autorizzazione a twitter
+ *Richiedo il token a twitter che servirà poi a richiedere l' autorizzazione a twitter
  * ____________________________________________________________________________________________________*/
 	request.post({url : requestTokenUrl, oauth : oauth}, function (e, r, body){
 		
@@ -219,10 +224,12 @@ app.get("/autenticati", function (req, res) {
 		console.log(oauthToken);
 		//LLLLLLLLLLrequest.get(uri,function(er,re,bo){
 /*____________________________________________________________________________________________________
- *Reindirizzo l'utente alla pagina di twitter dove dovrà autorizzare l'applicazione Cararia, e una volta autorizzato l'utente
- *  verrà di nuovo reindirizzato alla url di callback  "/autenticato" indicata nell'oggetto oauth passato come parametro alla post precedente
+ *Reindirizzo l'utente alla pagina di twitter dove dovrà autorizzare l' applicazione Cararia, e una volta autorizzato l'utente
+ *  verra di nuovo reindirizzato alla url di callback  "/autenticato" indicata nell'oggetto oauth passato come parametro alla post precedente
  * ____________________________________________________________________________________________________*/
-		res.send('<html><head><meta charset="utf-8"> <title>Cararia</title></head><body><h1>Autorizzazione App</h1><a href='+uri+' >Esegui l accesso a Twitter </a></body></html>')
+ 
+		if (oauthToken==undefined) res.send('<html><head><meta charset="utf-8"> <title>Cararia</title></head><body><h1>Errore!</h1>Non si è ricevuta nessuna risposta dal server di Viaggiatreno si prega di riprovare piu tardi. Se vuole tornare alla pagina principale <a href="'+INDIRIZZO+":"+PORTA+'">cliccare qui </a></body></html>')
+		else res.send('<html><head><meta charset="utf-8"> <title>Cararia</title></head><body><h1>Autorizzazione App</h1>Per poter usufruire del servizio è necessario prima <a href='+uri+' >eseguire l'+"'"+' accesso a Twitter</a> per rilaciare i permessi necessari</body></html>')
 		//LLLLLLLL});
 	});
 
@@ -241,15 +248,15 @@ app.get("/autenticato",function(req,res){
 
 	
 /*____________________________________________________________________________________________________
- *Richiesta a twitter dell'access token che permetterà, nel nostro caso specifico, di inviare un twitter da parte dell'utente
+ *Richiesta a twitter dell access token che permetterà, nel nostro specifico, di inviare un twitter da parte dell' utente
  * ____________________________________________________________________________________________________*/
 		var accessTokenUrl = "https://api.twitter.com/oauth/access_token";
 		request.post({url : accessTokenUrl , oauth : oauth_autenticato}, function(e, r, body){
 			 var authenticatedData= qs.parse(body);
-			 //Creo una variabile di sessione authenticatedData in cui salvo l'access token appena ottenuto
+			 //Creo una variabile di sessione authenticatedData in cui salvo l' access token appena ottenuto
 			req.session.authenticatedData=authenticatedData
 		
-		//L'utente inizia cosi la compilazione dei campi relativi al viaggio
+		//L' utente inizia cosi la compilazione dei campi relativi al viaggio
 		res.send(form_p)
 			
 	});
@@ -262,7 +269,7 @@ app.get("/reinserisci_partenza",function(req,res){res.send(form_p)});
 
 
 /*____________________________________________________________________________________________________________________________
- *I due seguenti indirizzi, "/submit_partenza" e "/submit_destinazione" , sono quelli a cui rimandano rispettivamente le form, partenza e destinazione
+ *I due seguenti indirizzi, "/submit_partenza" e "/submit_destinazione" , sono quelle a  cui rimandano rispettivamente le form, partenza e destinazione
  * ____________________________________________________________________________________________________________________________*/
 app.get("/submit_partenza/",submit_stazione_handler);
 
@@ -285,8 +292,8 @@ app.get("/destinazione_selezionata/",function(req,res){//"/orario"
 
 
 /*____________________________________________________________________________________________________________________________
- *Una volta selezionati, stazione di partenza e arrivo e l'orario viene fatta una richiesta, tramite un'API rest offerta da trenitalia, delle possibili soluzioni
- *  di viaggio disponibili che vengono così offerte all'utente che sceglierà quella esatta
+ *Una volta selezionati, stazione di partenza e arrivo e l'orario viene fatta una richiesta, tramite un' API rest offerta da trenitalia, delle possibili soluzioni
+ *  di viaggio disponibili  che vengono cosi offerte all'utente che sceglierà quella esatta
  * ____________________________________________________________________________________________________________________________*/
 app.get("/orario_selezionato/",function(req,res){//"/Scegli  soluzione"
 	var a_scelto=req.query.anno
@@ -405,8 +412,8 @@ app.get("/orario_selezionato/",function(req,res){//"/Scegli  soluzione"
 
 
 /*_______________________________________________________________________________________________________________
- *Una volta che l'utente ha selezionato la soluzione di viaggio che verrà da lui intrapresa, viene costruito il tweet corrispondente al
- *   viaggio(recuperando se disponibili i nomi delle citta in cui si trovano le stazioni)  che verrà inviato 15 minuti prima della partenza
+ *Una volta che l'utente ha selezionato la soluzione di viaggio che  verrà da lui intrapresa, viene costruito il tweet  corrispondente al
+ *   viaggio(recuperando se disponibili i nomi delle citta in cui si trovano le stazioni)  che verrà inviato 15 minuti prima della prtenza
  * _______________________________________________________________________________________________________________*/
 app.get("/soluzione_selezionata", function(req, res){
 
@@ -501,7 +508,7 @@ app.get("/soluzione_selezionata", function(req, res){
 			
 			
 		})
-		res.send('<html><head><meta charset="utf-8"> <title>Cararia</title></head><body><h1>Bene  </h1><h3>Il tuo messaggio verra inviato un quarto'+" d'ora prima della partenza"+" </h3><h4>Se vuoi inviare un ulteriore messaggio allora <a href='"+INDIRIZZO+':'+PORTA+"'/>clicca quì</a></body></html>")
+		res.send('<html><head><meta charset="utf-8"> <title>Cararia</title></head><body><h1>Bene  </h1><h3>Il Tweet verrà inviato un quarto'+" d'ora prima della partenza"+" </h3><h4>Se vuoi inviare un ulteriore messaggio allora <a href='"+INDIRIZZO+':'+PORTA+"'/>clicca quì</a></body></html>")
 	
 			
 		
@@ -543,7 +550,7 @@ function itera(sol){
 
 
 /*_____________________________________________________________________________________________________________________________
- *Definisco la funzione con cui mandare il tweet e nel caso di presenza di città di passaggio verrà mandato un secondo tweet come risposta al primo
+ *Definisco la funzione con cui mandare il tweet e nel caso di presenza di città  di passaggio verrà mandato un secondo tweet come risposta al primo
  * _____________________________________________________________________________________________________________________________*/
 function manda_tweet(testo_tweet,testo_comm_tweet,authenticatedData,res,cond){
 
@@ -601,7 +608,7 @@ else {
 
 
 /*____________________________________________________________________________________________
- *Definisco la funzione con cui mandare il tweet di risposta al primo nel caso di presenza di città di passaggio
+ *Definisco la funzione con cui mandare il tweet di riposta al primo nel caso di presenza di città  di passaggio
  * ____________________________________________________________________________________________*/
 	
 function manda_reply_tweet(testo_tweet,authenticatedData,res,ref_id){
