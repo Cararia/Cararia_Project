@@ -22,7 +22,7 @@ Servizi REST usati:
 	- API viaggio treno
 	
 	Per quanto riguarda twitter è stata implementata l'autenticazione e autorizzazione oauth; per
-	eventuali informazioni riferirsi al seguente link: https://dev.twitter.com/oauth/3-legged .
+	eventuali informazioni riferirsi al seguente link: https://dev.twitter.com/oauth/3-legged.
 	Inoltre, per poter inviare il tweet con le informazioni relative ad un viaggio è stata utilizzata
 	la chiamata POST statues/update.
 
@@ -32,6 +32,9 @@ Servizi REST usati:
 Servizio di messaggeria asincrona:
 	Rabbitmq è il servizio scelto. E' stato implementato nel seguente modo: si utilizza una singola coda
 	di messaggi denominata 'hello' in cui viene inviato un messaggio ogni qual volta un utente accede 
-	all'homepage dell'applicazione. Ogni volta che un utente clicca sul secondo bottone presente sulla homepage,
-	viene attivato il server di rabbitmq che legge i messaggi presenti sulla coda ed incrementa di 1 il valore di un contatore;
-	dopo aver letto tutti i messaggi si visualizza il numero di visitatori che hanno usufruito del servizio e si chiude il server.
+	all'homepage dell'applicazione. Il server di rabbitmq si attiva all'avvio dell'applicazione ed ogni minuto 
+	legge i messaggi presenti nella coda incrementando di 1 il valore di due contatori. Il primo tiene conto delle
+	visite giornaliere (viene azzerato ogni 24 ore), il secondo tiene conto delle visite totali.
+	Ogni volta che un utente clicca sul secondo bottone presente sulla homepage, viene rimandato in una pagina in cui visualizza 
+	il numero di visite totali e giornaliere.
+	Per ulteriori informazioni sul servizio riferirsi al seguente link: https://www.rabbitmq.com/
