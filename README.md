@@ -11,23 +11,23 @@ Come funziona:
 	dell'applicazione.
 	Proseguendo, dopo esserci autenticati con l'account di twitter verremo reindirizzati 
 	in una pagina in cui è presente una form.
-	A questo punto si dovrà compilare la form con le informazioni sul viaggio; in particolare 
+	A questo punto si dovrà compilare una serie di form con le informazioni sul viaggio; in particolare 
 	si dovrà cercare per poi scegliere la stazione di partenza e di arrivo, e inserire l'ora e la data di partenza.
-	A completamento della form il messaggio verrà generato automaticamente ed inviato solo 15 minuti
-	prima dell'effettiva partenza.
+	A completamento delle form il messaggio verrà generato automaticamente ed inviato dal sistema attraverso un 
+	tweet  15 minuti prima dell'effettiva partenza.
 	
 Servizi REST usati:
 	Per questa applicazione sono stati utilizzati due servizi REST:
 	- API Twitter
 	- API Viaggiatreno di Trenitalia
 	
-Per quanto riguarda twitter è stata implementata l'autenticazione e autorizzazione oauth; per
-	eventuali informazioni riferirsi al seguente link: https://dev.twitter.com/oauth/3-legged.
-	Inoltre, per poter inviare il tweet con le informazioni relative ad un viaggio è stata utilizzata
+Per quanto riguarda twitter è stata implementata l'autenticazione e autorizzazione OAUTH (per
+	eventuali informazioni riferirsi al seguente link: https://dev.twitter.com/oauth/3-legged)
+	E inoltre, per poter inviare il tweet con le informazioni relative al viaggio è stata utilizzata
 	la chiamata POST statues/update.
 
-Inve con le API rest di Viaggiatreno si ottiene l' elenco delle stazioni, con relative informazione, il cui nome inizia con una
-	certa stringa e inoltre si ottiene l'elenco delle soluzioni di viaggio che collegano 2 particolari stazioni
+Invece con le API rest di Viaggiatreno si ottiene l' elenco delle stazioni, con relative informazione, il cui nome
+inizia conuna certa stringa e inoltre si ottiene l'elenco delle soluzioni di viaggio che collegano 2 particolari stazioni
 	Per ulteriori informazioni riferirsi al seguente link: https://github.com/Razorphyn/Informazioni-Treni-Italiani
 	
 Servizio di messaggeria asincrona:
