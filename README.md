@@ -20,12 +20,13 @@ Servizi REST usati:
 	Per questa applicazione sono stati utilizzati due servizi REST:
 	- API Twitter
 	- API Viaggiatreno di Trenitalia
-	Per quanto riguarda twitter è stata implementata l'autenticazione e autorizzazione oauth; per
+	
+Per quanto riguarda twitter è stata implementata l'autenticazione e autorizzazione oauth; per
 	eventuali informazioni riferirsi al seguente link: https://dev.twitter.com/oauth/3-legged.
 	Inoltre, per poter inviare il tweet con le informazioni relative ad un viaggio è stata utilizzata
 	la chiamata POST statues/update.
 
-	Con le seconde API si ottiene l' elenco delle stazioni, con relative informazione, il cui nome inizia con una
+Inve con le API rest di Viaggiatreno si ottiene l' elenco delle stazioni, con relative informazione, il cui nome inizia con una
 	certa stringa e inoltre si ottiene l'elenco delle soluzioni di viaggio che collegano 2 particolari stazioni
 	Per ulteriori informazioni riferirsi al seguente link: https://github.com/Razorphyn/Informazioni-Treni-Italiani
 	
