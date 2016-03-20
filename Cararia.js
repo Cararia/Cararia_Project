@@ -60,7 +60,7 @@ setInterval(function(){
 
 
 /*______________________________________________________________________________
- *Definisco una funziona che chiama una certa funzione fn 15 minuti prima di una certa data d
+ *Definisco una funzione che chiama una certa funzione fn 15 minuti prima di una certa data d
  * ______________________________________________________________________________*/
 function waithForDate(fn, d){
     var t = d.getTime() - (new Date()).getTime()-15*60*1000;
@@ -70,7 +70,7 @@ function waithForDate(fn, d){
 
 
 /*____________________________________________________________________________________________________
- *Definisco la url a cui andra chiesto il token per l' autenticazione con twitter
+ *Definisco la url a cui andrà chiesto il token per l' autenticazione con twitter
  * ____________________________________________________________________________________________________*/
 var requestTokenUrl = "https://api.twitter.com/oauth/request_token";
 
@@ -78,8 +78,8 @@ var requestTokenUrl = "https://api.twitter.com/oauth/request_token";
 /*____________________________________________________________________________________________________
  *Chiavi assegnate da twitter all'app Cararia che offre il servizio
  * ____________________________________________________________________________________________________*/
-var CONSUMER_KEY = "pBmDZZnfK3LrUiM940UaG7SqD";
-var CONSUMER_SECRET = "VLIj2EF0BMOEaTSHFw04GTOPzueDwgdDznZqrjB5VraJNvBCIk";
+var CONSUMER_KEY = "***";
+var CONSUMER_SECRET = "***";
 
 /*____________________________________________________________________________________________________
  *Definisco l' oggetto oauth che andrà inviato come parametro per la richiesta del token per l' autenticazione con twitter
@@ -107,7 +107,7 @@ var submit_stazione_handler=function(req,res){
 	request.get(url,function(err,response,body){
 		console.log(err);
 		
-		//controllo se il riultato è vuoto, se è vuoto mando messaggio di errore!
+		//controllo se il risultato è vuoto, in caso positivo mando un messaggio di errore!
 		if (body=="" ) {
 				var target;
 				if(req.query.tappa=="partenza")
@@ -169,7 +169,7 @@ var home_handler=function(req,res){
 	// Inizio Sender
 	
 	/*____________________________________________________________________________________________________
-	 *Ad ogni accesso alla home page registro l' avvenuto accesso al sito inviando un messaggio alla coda 'hello' di rabbit-mq
+	 *Ad ogni accesso alla homepage registro l' avvenuto accesso al sito inviando un messaggio alla coda 'hello' di rabbit-mq
 	 * ____________________________________________________________________________________________________*/
 	amqp.connect('amqp://guest:guest@localhost:5672', function(err, conn) {
 	  conn.createChannel(function(err, ch) {
@@ -229,7 +229,7 @@ app.get("/autenticati", function (req, res) {
  * ____________________________________________________________________________________________________*/
  
 		if (oauthToken==undefined) res.send('<html><head><meta charset="utf-8"> <title>Cararia</title></head><body><h1>Errore!</h1>Non si è ricevuta nessuna risposta dal server di Viaggiatreno si prega di riprovare piu tardi. Se vuole tornare alla pagina principale <a href="'+INDIRIZZO+":"+PORTA+'">cliccare qui </a></body></html>')
-		else res.send('<html><head><meta charset="utf-8"> <title>Cararia</title></head><body><h1>Autorizzazione App</h1>Per poter usufruire del servizio è necessario prima <a href='+uri+' >eseguire l'+"'"+' accesso a Twitter</a> per rilaciare i permessi necessari</body></html>')
+		else res.send('<html><head><meta charset="utf-8"> <title>Cararia</title></head><body><h1>Autorizzazione App</h1>Per poter usufruire del servizio è necessario prima <a href='+uri+' >eseguire l'+"'"+' accesso a Twitter</a> per rilasciare i permessi necessari</body></html>')
 		//LLLLLLLL});
 	});
 
@@ -248,7 +248,7 @@ app.get("/autenticato",function(req,res){
 
 	
 /*____________________________________________________________________________________________________
- *Richiesta a twitter dell access token che permetterà, nel nostro specifico, di inviare un twitter da parte dell' utente
+ *Richiesta a twitter dell'access token che permetterà, nel nostro caso specifico, di inviare un twitter da parte dell' utente
  * ____________________________________________________________________________________________________*/
 		var accessTokenUrl = "https://api.twitter.com/oauth/access_token";
 		request.post({url : accessTokenUrl , oauth : oauth_autenticato}, function(e, r, body){
@@ -269,7 +269,7 @@ app.get("/reinserisci_partenza",function(req,res){res.send(form_p)});
 
 
 /*____________________________________________________________________________________________________________________________
- *I due seguenti indirizzi, "/submit_partenza" e "/submit_destinazione" , sono quelle a  cui rimandano rispettivamente le form, partenza e destinazione
+ *I due seguenti indirizzi, "/submit_partenza" e "/submit_destinazione" , sono quelli a cui rimandano rispettivamente le form, partenza e destinazione
  * ____________________________________________________________________________________________________________________________*/
 app.get("/submit_partenza/",submit_stazione_handler);
 
@@ -293,7 +293,7 @@ app.get("/destinazione_selezionata/",function(req,res){//"/orario"
 
 /*____________________________________________________________________________________________________________________________
  *Una volta selezionati, stazione di partenza e arrivo e l'orario viene fatta una richiesta, tramite un' API rest offerta da trenitalia, delle possibili soluzioni
- *  di viaggio disponibili  che vengono cosi offerte all'utente che sceglierà quella esatta
+ *  di viaggio disponibili  che vengono così offerte all'utente che sceglierà quella esatta
  * ____________________________________________________________________________________________________________________________*/
 app.get("/orario_selezionato/",function(req,res){//"/Scegli  soluzione"
 	var a_scelto=req.query.anno
